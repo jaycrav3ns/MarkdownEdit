@@ -1,7 +1,10 @@
 # MarkdownEdit
 An HTML/JS based Markdown editor.  Wacko Wiki formatting.
-![mdedit-ss](https://github.com/jaycrav3ns/MarkdownEdit/assets/21302027/e164f3a4-64f0-4a1d-b563-78bd16ca1d7e)
-Check out the [Demo](https://modulate.66ghz.com/mdedit/).
+
+![mdedit-ss](https://github.com/jaycrav3ns/MarkdownEdit/assets/21302027/da32d0b7-c032-4c7b-b774-4903b14072d2)
+
+
+Check it out: [Demo](https://modulate.66ghz.com/mdedit/).
 
 I put the wiki format into constants. This will make it easy to customize the markdown to any format.
 

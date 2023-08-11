@@ -1,0 +1,125 @@
+body {
+		font-family: Verdana;
+		background-color: #131313;
+		margin: 10px;
+		color: #FFFFFF;
+		justify-content: center;
+}
+
+p {
+		margin-left: 40px;
+}
+
+textarea {
+		width: 640px;
+		height: 250px;
+		font-size: 120%;
+		font-weight: 500;
+		background-color: #000;
+		color: #FFF;
+		margin-left: 40px;
+		border: 1px solid #b23500;
+}
+
+textarea:focus {
+    outline: transparent;
+}
+
+.editbtns {
+		display: inline-block;
+		outline: transparent;
+		cursor: pointer;
+		font-size: 14px;
+		padding: 2px 12px;
+		height: 24px;
+		max-height: 30px;
+		background: #000;
+		font-weight: 700;
+		border: 1px solid #b23500;
+		border-radius: 0;
+		transition-timing-function: ease-in-out;
+		transition-property: box-shadow;
+		transition-duration: 150ms;
+}
+
+.editbtns:hover {
+  	box-shadow: 0 2px 2px rgb(39 44 52 / 12%);
+		background: #000000;
+		border: 1px solid gold;
+}
+
+.tooltip {
+    display: inline;
+    position: relative;
+}
+
+.tooltip:hover:after {
+    display: flex;
+    justify-content: center;
+    background: #000;
+		border: 1px solid #b23500;
+    border-radius: 8px;
+    color: #ff8f00;
+		font-weight: 700;
+    content: attr(title);
+    font-size: 14px;
+    padding: 4px;
+    width: 60px;
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Position the tooltip to the right of the icon */
+    transform: translateY(-50%); /* Center the tooltip vertically */
+}
+
+.tooltip:hover:before {
+    border: solid;
+    border-color: #444 transparent;
+    border-width: 12px 6px 0 6px;
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 100%; /* Position the arrow to the right of the icon */
+    transform: translateY(-50%); /* Center the arrow vertically */
+}
+
+#icon-1 img,
+#icon-2 img,
+#icon-3 img,
+#icon-4 img {
+  	background-color: transparent;
+  	vertical-align: top;
+}
+
+.icon-1,
+.icon-2,
+.icon-3
+icon-4 {
+  	display: block;
+}
+
+.wrapper {
+  	vertical-align: center;
+  	display: block;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    padding-top: 10px;
+}
+
+	.icon-container > {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-left: 10px;
+}
+
+a {
+		text-decoration: none;
+}
+
+.btnpanel {
+		margin-left: 40px;
+		margin-top: 5px;
+}

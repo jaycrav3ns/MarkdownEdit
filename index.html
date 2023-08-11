@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Markdown Edit</title>
+  <link rel="icon" href="./src/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="./src/style.css">
+</head>
+
+<body>
+
+<img src="./src/markdwn.png" style="margin-left: 40px;" width="42" height="42">
+<span id="copiedText"></span>
+
+<!-- Bold -->
+<div class="btnpanel">
+<a href="#" onclick="insertText(boldStart, boldEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+		<path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
+	</svg>
+</a>
+
+<!-- Underline -->
+<a href="#" onclick="insertText(underlineStart, underlineEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
+		<line x1="4" y1="21" x2="20" y2="21"></line>
+	</svg>
+</a>
+
+<!-- Italic -->
+<a href="#" onclick="insertText(italicStart, italicEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M19 4h-9M14 20H5M14.7 4.7L9.2 19.4"/>
+	</svg>
+</a>
+
+<!-- Strikethrough -->
+<a href="#" onclick="insertText(strikeStart, strikeEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.3 3.6 3.9h.2m8.2 3.7c.3.4.4.8.4 1.3 0 2.9-2.7 3.6-6.2 3.6-2.3 0-4.4-.3-6.2-.9M4 11.5h16"/>
+	</svg>
+</a>
+
+<!-- Code Block -->
+<a href="#" onclick="insertText(sourceStart, sourceEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+		<polyline points="16 18 22 12 16 6"></polyline>
+		<polyline points="8 6 2 12 8 18"></polyline>
+	</svg>
+</a>
+
+<!-- Center Align -->
+<a href="#" onclick="insertText(centerStart, centerEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M19 9.5H5M21 4.5H3M21 14.5H3M19 19.5H5"/>
+	</svg>
+</a>
+
+<!-- Right Align-->
+<a href="#" onclick="insertText(rightStart, rightEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M21 9.5H7M21 4.5H3M21 14.5H3M21 19.5H7"/>
+	</svg>
+</a>
+
+<!-- Justify -->
+<a href="#" onclick="insertText(justifyStart, justifyEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M21 9.5H3M21 4.5H3M21 14.5H3M21 19.5H3"/>
+	</svg>
+</a>
+
+<!-- Table -->
+<a href="#" onclick="insertText(mktableStart, mktableEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<rect x="3" y="3" width="18" height="18" rx="2"/>
+		<path d="M21 12H3M12 3v18"/>
+	</svg>
+</a>
+
+<!-- Unordered List -->
+<a href="#" onclick="insertText(ulStart, ulEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>
+		<line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>
+		<line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+	</svg>
+</a>
+
+<!-- Ordered List -->
+<a href="#" onclick="insertText(olStart, olEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+		<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>
+		<line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>
+		<line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
+	</svg>
+</a>
+
+<!--  Indent -->
+<a href="#" onclick="insertText(indentStart, indentEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+		<path d="M16 17l5-5-5-5M19.8 12H9M10 3H4v18h6"/>
+	</svg>
+</a>
+
+<!-- HTML Tag -->
+<a href="#" onclick="insertText(htmlStart, htmlEnd)">
+<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<polyline points="16 18 22 12 16 6"></polyline>
+		<polyline points="8 6 2 12 8 18"></polyline>
+	</svg>
+</a>
+
+<!-- Link / URL -->
+<a href="#" onclick="insertText(hyperlinkStart, hyperlinkEnd)">
+	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
+		<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+		<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+	</svg>
+</a>
+</div>
+
+<div class="icon-container">
+	<textarea autofocus wrap="soft" id="textInput" rows="15" cols="80"></textarea>
+
+<div id="wrapper" class="wrapper">
+<div id="icon-1">
+	<input type="file" id="mdimport" style="opacity: 0; position: absolute; z-index: -1;" />
+		<a href="#" onclick="importMarkdownFile()" title="Import" class="tooltip">&nbsp;&nbsp;
+			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+				<path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+				<path d="M14 3v5h5M12 18v-6M9 15h6"/>
+			</svg>
+		</a>
+</div>
+<div id="icon-2">
+  <a href="#" onclick="return exportMarkdownFile();" title="Export" class="tooltip">&nbsp;&nbsp;
+		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+			<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+			<polyline points="17 21 17 13 7 13 7 21"></polyline>
+			<polyline points="7 3 7 8 15 8"></polyline>
+		</svg>
+	</a>
+</div>
+<div id="icon-3">
+	<a href="#" onclick="copyToClipboard()" title="Copy" class="tooltip">&nbsp;&nbsp;
+		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+			<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+			<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+		</svg>
+	</a>
+</div>
+<div id="icon-4">
+  <a href="#" onclick="clearTextarea()" title="Clear" class="tooltip">&nbsp;&nbsp;
+		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
+			<path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
+			<line x1="18" y1="9" x2="12" y2="15"></line>
+			<line x1="12" y1="9" x2="18" y2="15"></line>
+		</svg>
+	</a>
+</div>
+</div>
+</div>
+
+<script type="text/javascript" src="./src/constants.js"></script>
+<script type="text/javascript" src="./src/filefunction.js"></script>
+<script type="text/javascript" src="./src/textfunction.js"></script>
+
+</body>
+</html>

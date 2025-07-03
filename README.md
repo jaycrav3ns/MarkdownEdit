@@ -5,7 +5,8 @@ A modern, responsive, and user-friendly Markdown editor designed for rapid conve
 > **Highlight, click, and watch your plain text become Markdown!**
 
 ---
-
+![Screenshot_2025-07-03_12-59-46](https://github.com/user-attachments/assets/e5fa5140-4a46-483f-9293-96d5fc2ff1fd)
+---
 ## ✨ Features
 
 - **Highlight-to-Markdown:**  
@@ -75,12 +76,6 @@ index.html    # Main app file (all logic, UI, and styles here)
 
 - The layout adapts to phones and tablets.
 - Toolbar and icons remain usable on small screens.
-
----
-
-## 📋 License
-
-MIT License. See `LICENSE` for details.
 
 ---
 

@@ -1,172 +1,537 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-  <title>Markdown Edit</title>
-  <link rel="icon" href="./src/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" href="./src/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Edit</title>
+    <link rel="icon" href="data:image/svg+xml;utf8,%3Csvg%20height%3D%2240px%22%20width%3D%2250px%22%20version%3D%221.1%22%20id%3D%22Layer_1%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%20viewBox%3D%220%200%20640%20512%22%20xml%3Aspace%3D%22preserve%22%20fill%3D%22%23f9d779%22%3E%3Cpath%20d%3D%22M593.8%2059.1H46.2C20.7%2059.1%200%2079.8%200%20105.2v301.5c0%2025.5%2020.7%2046.2%2046.2%2046.2h547.7c25.5%200%2046.2-20.7%2046.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5%20360.6H277v-120l-61.5%2076.9-61.5-76.9v120H92.3V151.4h61.5l61.5%2076.9%2061.5-76.9h61.5v209.2zm135.3%203.1L381.5%20256H443V151.4h61.5V256H566z%22">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Verdana', sans-serif;
+            background: linear-gradient(0deg, #0F1D27, #2d3748);
+            color: #f7fafc;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+        }
+        /* Selection styles */
+        ::-moz-selection {
+            color: black;
+            background: #f9d779;
+        }
+        ::selection {
+            color: black;
+            background: #f9d779;
+        }
+        /* Main container */
+        .main-container {
+            width: 90%;
+            max-width: 1200px;
+            padding: 2rem;
+            border-radius: 0.7rem;
+            border: 1px solid #466D8A;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background-color: #2d3748;
+            /* Darker background for the container */
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+        /* Button panel styles */
+        .btnpanel {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            justify-content: flex-start; /* Align buttons to the left */
+        }
+        /* Editor buttons */
+        .editbtns {
+						margin-right: .2rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            outline: transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            /* 14px */
+            padding: 0.5rem 0.5rem;
+            background-color: #4a5568;
+            /* Dark button background */
+            color: #cbd5e0;
+            /* Light button text */
+            font-weight: 600;
+            border: 1px solid #718096;
+            border-radius: 0.5rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        .editbtns:hover {
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+            background-color: #041F2F;
+            /* Lighter button background on hover */
+            color: black;
+            /* Darker button text on hover */
+            border-color: #f9d779;
+        }
+        /* Textarea styles */
+        textarea {
+            width: 90%;
+            height: 300px;
+            padding: 1rem;
+            font-size: 1.125rem;
+            /* 18px */
+            font-weight: 500;
+            background-color: #1a202c;
+            /* Dark textarea background */
+            color: #e2e8f0;
+            /* Light textarea text */
+            border: 1px solid #4a5568;
+            border-radius: 0.5rem;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            resize: vertical;
+            /* Allow vertical resizing */
+            outline: transparent;
+        }
+        textarea:focus {
+            border-color: #35556D;
+            box-shadow: 0 0 5px rgba(249, 215, 121, 0.5);
+        }
+        /* Icon container */
+        .icon-container {
+            display: flex;
+            justify-content: flex-start;
+            /* Align items to the start */
+            align-items: center;
+            gap: 1.5rem;
+            /* Space between icons */
+            padding-top: 1rem;
+            flex-wrap: wrap; /* Allow icons to wrap on smaller screens */
+        }
+        .icon-container>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .icon-container a {
+            text-decoration: none;
+        }
+        /* Tooltip styles */
+        .tooltip2 {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip2 .tooltiptext {
+            visibility: hidden;
+            width: 100px;
+            background-color: #041F2F;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -60px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .tooltip2 .tooltiptext::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent;
+        }
+        .tooltip2:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        /* File import styling */
+        input[type="file"] {
+            opacity: 0;
+            position: absolute;
+            z-index: -1;
+        }
+        /* Copy notification */
+        .copynotify {
+            color: #f9d779;
+            margin-bottom: 1rem;
+        }
+        /*Neumorphism effect*/
+        .neumorphism {
+            background: #2d3748;
+            border-radius: 13px;
+            background: linear-gradient(145deg, #262e3b, #343f50);
+            box-shadow: 9px 9px 18px #202732,
+                -9px -9px 18px #3a455e;
+        }
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-container {
+                width: 95%;
+                padding: 1.5rem;
+            }
+            .btnpanel {
+                justify-content: center; /* Center buttons on smaller screens */
+            }
+            .editbtns {
+                font-size: 0.9rem; /* Smaller font size for buttons */
+                padding: 0.2rem 0.5rem;
+            }
+            textarea {
+                font-size: 1rem; /* Smaller font size for textarea */
+                height: 300px; /* Adjust height as needed */
+            }
+            .icon-container {
+                justify-content: center; /* Center icons on smaller screens */
+            }
+        }
+        @media (max-width: 600px) {
+            .main-container {
+                padding: 1rem;
+            }
+            .editbtns {
+                font-size: 0.8rem; /* Even smaller font size for buttons */
+            }
+            textarea {
+                height: 250px; /* Further adjust height as needed */
+            }
+        }
+    </style>
 </head>
+<body class="bg-gray-900 text-white antialiased">
+    <div class="main-container neumorphism">
+        <span class="copynotify" id="copiedText"></span>
+        <div class="btnpanel">
+            <div style="position:inline;">
+                <svg height="60px" width="70px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 640 512" xml:space="preserve" fill="#f9d779">
+                    <path d="M593.8 59.1H46.2C20.7 59.1 0 79.8 0 105.2v301.5c0 25.5 20.7 46.2 46.2 46.2h547.7c25.5 0 46.2-20.7 46.1-46.1V105.2c0-25.4-20.7-46.1-46.2-46.1zM338.5 360.6H277v-120l-61.5 76.9-61.5-76.9v120H92.3V151.4h61.5l61.5 76.9 61.5-76.9h61.5v209.2zm135.3 3.1L381.5 256H443V151.4h61.5V256H566z">
+                    </path>
+                </svg>
+            <!-- Bold -->
+            <a href="#" onclick="toggleTextMarkup(boldStart, boldEnd)" class="editbtns tooltip2">
+                <i class="fas fa-bold fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Bold</span>
+            </a>
+            <!-- Italic -->
+            <a href="#" onclick="toggleTextMarkup(italicStart, italicEnd)" class="editbtns tooltip2">
+                <i class="fas fa-italic fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Italic</span>
+            </a>
+            <!-- Strikethrough -->
+            <a href="#" onclick="toggleTextMarkup(strikeStart, strikeEnd)" class="editbtns tooltip2">
+                <i class="fas fa-strikethrough fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Strike</span>
+            </a>
+            <!-- Code Block -->
+            <a href="#" onclick="toggleTextMarkup(sourceStart, sourceEnd)" class="editbtns tooltip2">
+                <i class="fa-solid fa-square" style="color:#f9d779;"></i></i>
+                <span class="tooltiptext">Code Block</span>
+            </a>
+            <!-- Table -->
+            <a href="#" onclick="toggleTable()" class="editbtns tooltip2">
+                <i class="fas fa-table fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Table</span>
+            </a>
+            <!-- Ordered List -->
+            <a href="#" onclick="insertText(olStart, olEnd)" class="editbtns tooltip2">
+                <i class="fas fa-list-ol fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Ordered</span>
+            </a>
+            <!-- Unordered List -->
+            <a href="#" onclick="insertText(ulStart, ulEnd)" class="editbtns tooltip2">
+                <i class="fas fa-list-ul fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Unordered</span>
+            </a>
+            <!-- One-line code -->
+            <a href="#" onclick="insertText(indentStart, indentEnd)" class="editbtns tooltip2">
+                <i class="fa-solid fa-terminal" style="color:#f9d779;"></i>
+                <span class="tooltiptext">One-Liner</span>
+            </a>
+            <!-- Blockquote -->
+            <a href="#" onclick="insertText(indentStart, indentEnd)" class="editbtns tooltip2">
+                <i class="fas fa-indent fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Blockquote</span>
+            </a>
+            <!-- Inline code -->
+            <a href="#" onclick="insertText(inlineCodeStart, inlineCodeEnd)" class="editbtns tooltip2">
+                <i class="fas fa-code fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Inline Code</span>
+            </a>
+            <!-- Hyperlink -->
+            <a href="#" onclick="insertText(hyperlinkStart, hyperlinkEnd)" class="editbtns tooltip2">
+                <i class="fas fa-link fa-lg" style="color:#f9d779;"></i>
+                <span class="tooltiptext">Hyperlink</span>
+            </a>
+            <!-- Horizontal rule -->
+						<a href="#" onclick="insertHR()" class="editbtns tooltip2">
+								<i class="fas fa-minus fa-lg" style="color:#f9d779;"></i>
+								<span class="tooltiptext">Line rule</span>
+						</a>
+        </div>
+        <div class="flex flex-col items-start w-full">
+            <textarea autofocus="" wrap="soft" id="textInput" rows="12" cols="110" class="w-full"></textarea>
+            <div class="icon-container w-full">
+                <div>
+                    <input type="file" id="mdimport">
+                    <a href="#" onclick="importMarkdownFile()" class="tooltip2">
+                        <i class="fas fa-file-import fa-2x" style="color:#f9d779;"></i>
+                        <span class="tooltiptext">Import</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="#" onclick="return exportMarkdownFile();" class="tooltip2">
+                        <i class="fas fa-file-export fa-2x" style="color:#f9d779;"></i>
+                        <span class="tooltiptext">Export</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="#" onclick="copyToClipboard()" class="tooltip2">
+                        <i class="fas fa-copy fa-2x" style="color:#f9d779;"></i>
+                        <span class="tooltiptext">Copy</span>
+                    </a>
+                </div>
+                <div>
+                    <a href="#" onclick="clearTextarea()" class="tooltip2">
+                        <i class="fas fa-trash fa-2x" style="color:#f9d779;"></i>
+                        <span class="tooltiptext">Clear</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Bold
+        const boldStart = "**";
+        const boldEnd = "**";
+        const bold = `${boldStart}${boldEnd}`;
+        // Italic
+        const italicStart = "*";
+        const italicEnd = "*";
+        const italic = `${italicStart}${italicEnd}`;
+        // Strikethrough
+        const strikeStart = "~~";
+        const strikeEnd = "~~";
+        const strike = `${strikeStart}${strikeEnd}`;
+        // Code block
+        const sourceStart = "```";
+        const sourceEnd = "```";
+        const source = `${sourceStart}${sourceEnd}`;
+        // Ordered list
+        const olStart = "1. ";
+        const olEnd = "\n";
+        const ol = `${olStart}${olEnd}`;
+        // Unordered list
+        const ulStart = "- ";
+        const ulEnd = "\n";
+        const ul = `${ulStart}${ulEnd}`;
+        // Indented code
+        const indentStart = "    ";
+        const indentEnd = "\n";
+        const indent = `${indentStart}${indentEnd}`;
+        // Table
+        const mktableStart = "| Header | Header |\n| --- | --- |\n| Cell | Cell |\n";
+        const mktableEnd = "";
+        // Inline code
+        const inlineCodeStart = "`";
+        const inlineCodeEnd = "`";
+        // Hyperlink
+        const hyperlinkStart = "[](";
+        const hyperlinkEnd = ")";
 
-<body>
+				function insertText(startEnclosure, endEnclosure) {
+						var textarea = document.getElementById('textInput');
+						var startPos = textarea.selectionStart;
+						var endPos = textarea.selectionEnd;
+						var content = textarea.value;
+						var selectedText = content.substring(startPos, endPos);
+						var newText = startEnclosure + selectedText + endEnclosure;
+						textarea.value = content.substring(0, startPos) + newText + content.substring(endPos);
 
-<img src="./src/markdwn.png" style="margin-left: 40px;" width="42" height="42">
-<span id="copiedText"></span>
+						// Set the cursor position to the end of the inserted text
+						var newCursorPosition = startPos + newText.length; // Simplified calculation
+						textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+						textarea.focus(); // Ensure the textarea has focus
+				}
 
-<!-- Bold -->
-<div class="btnpanel">
-<a href="#" onclick="insertText(boldStart, boldEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
-		<path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"></path>
-	</svg>
-</a>
+				function toggleTextMarkup(startEnclosure, endEnclosure) {
+						var textarea = document.getElementById('textInput');
+						var startPos = textarea.selectionStart;
+						var endPos = textarea.selectionEnd;
+						var content = textarea.value;
+						var selectedText = content.substring(startPos, endPos);
 
-<!-- Underline -->
-<a href="#" onclick="insertText(underlineStart, underlineEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"></path>
-		<line x1="4" y1="21" x2="20" y2="21"></line>
-	</svg>
-</a>
+						if (selectedText !== '') {
+								// Check if the selected text is already formatted, and remove the formatting if it matches the provided enclosure
+								if (selectedText.startsWith(startEnclosure) && selectedText.endsWith(endEnclosure)) {
+								    var unformattedText = selectedText.substring(startEnclosure.length, selectedText.length - endEnclosure.length);
+								    textarea.value =
+								        content.substring(0, startPos) +
+								        unformattedText +
+								        content.substring(endPos);
 
-<!-- Italic -->
-<a href="#" onclick="insertText(italicStart, italicEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M19 4h-9M14 20H5M14.7 4.7L9.2 19.4"/>
-	</svg>
-</a>
+								    // Set the cursor position to the end of the unformatted text
+								    var newCursorPosition = startPos + unformattedText.length;
+								    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+								    textarea.focus(); // Ensure the textarea has focus
 
-<!-- Strikethrough -->
-<a href="#" onclick="insertText(strikeStart, strikeEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M17.3 4.9c-2.3-.6-4.4-1-6.2-.9-2.7 0-5.3.7-5.3 3.6 0 1.5 1.8 3.3 3.6 3.9h.2m8.2 3.7c.3.4.4.8.4 1.3 0 2.9-2.7 3.6-6.2 3.6-2.3 0-4.4-.3-6.2-.9M4 11.5h16"/>
-	</svg>
-</a>
+								} else {
+								    // Format the selected text with the provided enclosure
+								    var newText = startEnclosure + selectedText + endEnclosure;
+								    textarea.value =
+								        content.substring(0, startPos) +
+								        newText +
+								        content.substring(endPos);
 
-<!-- Code Block -->
-<a href="#" onclick="insertText(sourceStart, sourceEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-		<polyline points="16 18 22 12 16 6"></polyline>
-		<polyline points="8 6 2 12 8 18"></polyline>
-	</svg>
-</a>
+								    // Set the cursor position to the end of the inserted formatting
+								    var newCursorPosition = startPos + newText.length;
+								    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+								    textarea.focus(); // Ensure the textarea has focus
+								}
+						} else {
+								// Insert the combined enclosure at the current cursor position
+								var newText = startEnclosure + endEnclosure;
+								textarea.value = content.substring(0, startPos) + newText + content.substring(endPos);
 
-<!-- Center Align -->
-<a href="#" onclick="insertText(centerStart, centerEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M19 9.5H5M21 4.5H3M21 14.5H3M19 19.5H5"/>
-	</svg>
-</a>
+								// Set the cursor position to the end of the inserted text (between the enclosures)
+								var newCursorPosition = startPos + startEnclosure.length;
+								textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+								textarea.focus(); // Ensure the textarea has focus
+						}
+				}
 
-<!-- Right Align-->
-<a href="#" onclick="insertText(rightStart, rightEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M21 9.5H7M21 4.5H3M21 14.5H3M21 19.5H7"/>
-	</svg>
-</a>
+				function insertHyperlink() {
+						var textarea = document.getElementById('textInput');
+						var startPos = textarea.selectionStart;
+						var endPos = textarea.selectionEnd;
+						var content = textarea.value;
+						var selectedText = content.substring(startPos, endPos);
 
-<!-- Justify -->
-<a href="#" onclick="insertText(justifyStart, justifyEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M21 9.5H3M21 4.5H3M21 14.5H3M21 19.5H3"/>
-	</svg>
-</a>
+						let newText, cursorPos;
+						if (selectedText.includes("http")) {
+								newText = `[Link Text](${selectedText})`;
+								cursorPos = startPos + 1; // Between brackets for link text
+						} else {
+								newText = `[${selectedText}]()`;
+								cursorPos = startPos + newText.indexOf(')'); // Between parentheses for URL
+						}
 
-<!-- Table -->
-<a href="#" onclick="insertText(mktableStart, mktableEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<rect x="3" y="3" width="18" height="18" rx="2"/>
-		<path d="M21 12H3M12 3v18"/>
-	</svg>
-</a>
+						textarea.value = content.substring(0, startPos) + newText + content.substring(endPos);
+						textarea.setSelectionRange(cursorPos, cursorPos);
+						textarea.focus();
+				}
 
-<!-- Unordered List -->
-<a href="#" onclick="insertText(ulStart, ulEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>
-		<line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>
-		<line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
-	</svg>
-</a>
+				function insertHR() {
+						var textarea = document.getElementById('textInput');
+						var startPos = textarea.selectionStart;
+						var content = textarea.value;
+						// Insert HR on new lines
+						var before = content.substring(0, startPos);
+						var after = content.substring(startPos);
+						var insertText = "\n---\n";
+						var newCursor = before.length + insertText.length;
+						textarea.value = before + insertText + after;
+						textarea.setSelectionRange(newCursor, newCursor);
+						textarea.focus();
+				}
 
-<!-- Ordered List -->
-<a href="#" onclick="insertText(olStart, olEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-		<line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line>
-		<line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line>
-		<line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line>
-	</svg>
-</a>
+        function importMarkdownFile() {
+            var input = document.getElementById('mdimport');
+            input.click(); // Simulate a click on the hidden input file chooser
+            input.onchange = function () {
+                var file = input.files[0];
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var importedText = event.target.result;
+                    var textarea = document.getElementById('textInput');
+                    textarea.value = importedText;
+                };
+                reader.readAsText(file);
+            };
+        }
 
-<!--  Indent -->
-<a href="#" onclick="insertText(indentStart, indentEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-		<path d="M16 17l5-5-5-5M19.8 12H9M10 3H4v18h6"/>
-	</svg>
-</a>
+        function exportMarkdownFile() {
+            var content = document.getElementById('textInput').value;
+            var blob = new Blob([content], {
+                type: 'text/markdown'
+            });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'markdown-export.md';
+            a.click();
+            // Clean up the object URL
+            URL.revokeObjectURL(url);
+        }
 
-<!-- HTML Tag -->
-<a href="#" onclick="insertText(htmlStart, htmlEnd)">
-<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<polyline points="16 18 22 12 16 6"></polyline>
-		<polyline points="8 6 2 12 8 18"></polyline>
-	</svg>
-</a>
+        function copyToClipboard() {
+            const currentTextareaContents = document.getElementById('textInput');
+            currentTextareaContents.select();
+            document.execCommand('copy');
+            const copiedText = document.getElementById('copiedText');
+            copiedText.textContent = 'Copied!';
+            // Set a timer to hide the "Copied!" message after 2 seconds (2000 milliseconds)
+            setTimeout(() => {
+                copiedText.textContent = '';
+            }, 3000);
+        }
 
-<!-- Link / URL -->
-<a href="#" onclick="insertText(hyperlinkStart, hyperlinkEnd)">
-	<svg class="editbtns" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8f00" stroke-width="3" stroke-linecap="butt" stroke-linejoin="arcs">
-		<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-		<path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-	</svg>
-</a>
-</div>
+        function toggleTable() {
+            var textarea = document.getElementById('textInput');
+            var startPos = textarea.selectionStart;
+            var endPos = textarea.selectionEnd;
+            var content = textarea.value;
+            var selectedText = content.substring(startPos, endPos);
+            if (selectedText !== '') {
+                // Check if selected text looks like CSV with outer commas
+                var lines = selectedText.split('\n').filter(line => line.trim() !== '');
+                var isCSV = lines.length >= 2 && lines.every(line =>
+                    line.startsWith(',') && line.endsWith(',') && line.includes(',')
+                );
+                if (isCSV) {
+                    // Convert CSV to markdown table
+                    var tableLines = [];
+                    lines.forEach((line, index) => {
+                        // Remove outer commas and split by comma
+                        var cells = line.slice(1, -1).split(',');
+                        var tableRow = '| ' + cells.join(' | ') + ' |';
+                        tableLines.push(tableRow);
+                        // Add separator after header row
+                        if (index === 0) {
+                            var separator = '| ' + cells.map(() => '---').join(' | ') + ' |';
+                            tableLines.push(separator);
+                        }
+                    });
+                    var markdownTable = tableLines.join('\n') + '\n';
+                    // Replace selected text with markdown table
+                    textarea.value = content.substring(0, startPos) + markdownTable + content.substring(endPos);
+                    // Set cursor position after the table
+                    var newCursorPosition = startPos + markdownTable.length;
+                    textarea.setSelectionRange(newCursorPosition, newCursorPosition);
+                } else {
+                    // If not CSV, just insert basic table template
+                    insertText(mktableStart, mktableEnd);
+                }
+            } else {
+                // No selection, insert basic table template
+                insertText(mktableStart, mktableEnd);
+            }
+        }
 
-<div class="icon-container">
-	<textarea autofocus wrap="soft" id="textInput" rows="15" cols="80"></textarea>
-
-<div id="wrapper" class="wrapper">
-<div id="icon-1">
-	<input type="file" id="mdimport" style="opacity: 0; position: absolute; z-index: -1;" />
-		<a href="#" onclick="importMarkdownFile()" title="Import" class="tooltip">&nbsp;&nbsp;
-			<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-				<path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-				<path d="M14 3v5h5M12 18v-6M9 15h6"/>
-			</svg>
-		</a>
-</div>
-<div id="icon-2">
-  <a href="#" onclick="return exportMarkdownFile();" title="Export" class="tooltip">&nbsp;&nbsp;
-		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-			<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
-			<polyline points="17 21 17 13 7 13 7 21"></polyline>
-			<polyline points="7 3 7 8 15 8"></polyline>
-		</svg>
-	</a>
-</div>
-<div id="icon-3">
-	<a href="#" onclick="copyToClipboard()" title="Copy" class="tooltip">&nbsp;&nbsp;
-		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-			<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-			<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-		</svg>
-	</a>
-</div>
-<div id="icon-4">
-  <a href="#" onclick="clearTextarea()" title="Clear" class="tooltip">&nbsp;&nbsp;
-		<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="#FF4D00" stroke-width="2" stroke-linecap="round" stroke-linejoin="arcs">
-			<path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"></path>
-			<line x1="18" y1="9" x2="12" y2="15"></line>
-			<line x1="12" y1="9" x2="18" y2="15"></line>
-		</svg>
-	</a>
-</div>
-</div>
-</div>
-
-<script type="text/javascript" src="./src/constants.js"></script>
-<script type="text/javascript" src="./src/filefunction.js"></script>
-<script type="text/javascript" src="./src/textfunction.js"></script>
-
+        function clearTextarea() {
+            var textarea = document.getElementById('textInput');
+            textarea.value = '';
+        }
+    </script>
 </body>
 </html>
